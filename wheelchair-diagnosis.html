@@ -74,6 +74,10 @@
   }
   .checklist input{margin-top:3px;flex-shrink:0;}
   .helper-note{font-size:0.78rem;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--panel2);}
+  .ref-list{margin:0;padding-left:18px;}
+  .ref-list li{font-size:0.86rem;color:var(--sub);margin-bottom:9px;line-height:1.5;}
+  details.result-helper{border-top:none;margin-top:16px;padding-top:0;}
+  details.result-helper summary{color:var(--orange);}
 
   .back-btn{
     display:inline-block;margin-top:18px;font-size:0.84rem;color:var(--muted);
@@ -156,6 +160,14 @@
                   url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0006/", type:"help" }
   };
 
+  // ---- Body check criteria (自走できるかどうかの判断基準) ----
+  var BODY_CHECK_ITEMS = [
+    { label:"座ったときのバランス", detail:"支えなしで座った姿勢を保てる、かがんでも自分で戻れる" },
+    { label:"手の力", detail:"ペットボトルのフタを開けられる、タオルをしっかり握れる" },
+    { label:"腕を動かす力と範囲", detail:"腕を前後に繰り返し動かしても、肩・肘・手首に痛みが出ない" },
+    { label:"繰り返しても疲れないか", detail:"同じ動作を繰り返してもすぐには疲れない（持久力）" }
+  ];
+
   // ---- State ----
   var state = {
     step: "q1",
@@ -218,16 +230,15 @@
     renderProgress();
 
     if(state.step === "q1"){
+      var checklistHtml = "";
+      BODY_CHECK_ITEMS.forEach(function(item, i){
+        checklistHtml += '<label><input type="checkbox" data-chk="'+(i+1)+'"> '+item.detail+'（'+item.label+'）</label>';
+      });
       var helper =
         '<details class="helper"><summary>自信がない方は「その場でできる身体チェック」</summary>' +
         '<div class="helper-body">' +
         '<p>次の4つが目安です。当てはまらないものがあれば、無理に「はい」を選ばなくても大丈夫です。</p>' +
-        '<div class="checklist">' +
-        '<label><input type="checkbox" data-chk="1"> 支えなしで座った姿勢を保てる、かがんでも自分で戻れる（座位バランス）</label>' +
-        '<label><input type="checkbox" data-chk="2"> ペットボトルのフタを開けられる、タオルをしっかり握れる（手の力）</label>' +
-        '<label><input type="checkbox" data-chk="3"> 腕を前後に繰り返し動かしても、肩・肘・手首に痛みが出ない（腕の力・可動域）</label>' +
-        '<label><input type="checkbox" data-chk="4"> 同じ動作を繰り返してもすぐには疲れない（持久力）</label>' +
-        '</div>' +
+        '<div class="checklist">' + checklistHtml + '</div>' +
         '<div class="helper-note">※医療的な診断ではなく目安です。不安な項目がある場合、自走式という結果になっても、軽量・コンパクトなタイプを優先してご案内します。</div>' +
         '</div></details>';
 
@@ -340,6 +351,19 @@
     }
     if(isSelf && state.bodyCheckUsed && !state.bodyCheckAllOk){
       html += '<div class="result-note">身体チェックで気になる項目があったため、通常タイプより軽量・コンパクトなモデルを優先してご案内します。</div>';
+    }
+
+    if(isSelf){
+      var refListHtml = "";
+      BODY_CHECK_ITEMS.forEach(function(item){
+        refListHtml += '<li><b>'+item.label+'</b>：'+item.detail+'</li>';
+      });
+      html += '<details class="helper result-helper"><summary>自走式について：自走できるかどうかの判断基準</summary>' +
+        '<div class="helper-body">' +
+        '<p>「自走式」という結果が出た場合も、実際にご本人が無理なくこげるかは、購入前に次の4点を目安に確認しておくと安心です。</p>' +
+        '<ul class="ref-list">' + refListHtml + '</ul>' +
+        '<div class="helper-note">※医療的な診断ではなく目安です。当てはまらない項目がある場合は、無理に自走式にこだわらず介助式（または軽量・コンパクトなタイプ）もご検討ください。</div>' +
+        '</div></details>';
     }
 
     // ---- product recommendation ----

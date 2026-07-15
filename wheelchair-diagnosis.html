@@ -61,23 +61,57 @@
   .choice-btn:hover{border-color:var(--indigo-border);background:var(--indigo-bg);}
   .choice-btn .sub{display:block;font-size:0.82rem;color:var(--muted);margin-top:3px;font-weight:400;}
 
-  details.helper{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px;}
-  details.helper summary{cursor:pointer;font-size:0.9rem;color:var(--indigo);font-weight:600;list-style:none;}
+  details.helper{margin-top:18px;}
+  details.helper summary{
+    cursor:pointer;list-style:none;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-size:0.92rem;font-weight:700;color:var(--indigo);
+    background:var(--indigo-bg);
+    border:1.5px solid var(--indigo-border);
+    border-radius:12px;
+    padding:13px 16px;
+    transition:background .15s, border-color .15s;
+  }
+  details.helper summary:hover{background:#e0e7ff;border-color:#4f46e5;}
   details.helper summary::-webkit-details-marker{display:none;}
-  details.helper summary:before{content:"▸ ";}
-  details.helper[open] summary:before{content:"▾ ";}
-  .helper-body{margin-top:12px;font-size:0.86rem;color:var(--sub);}
+  details.helper summary > span:first-child{flex:1 1 auto;min-width:0;}
+  details.helper summary .tap-hint{
+    font-size:0.74rem;font-weight:600;color:var(--indigo);opacity:0.75;
+    white-space:nowrap;flex-shrink:0;
+  }
+  @media (max-width:400px){
+    details.helper summary .tap-hint{display:none;}
+  }
+  details.helper summary::after{
+    content:"";
+    width:8px;height:8px;flex-shrink:0;
+    border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+    transform:rotate(45deg);
+    transition:transform .2s;
+  }
+  details.helper[open] summary::after{ transform:rotate(-135deg); }
+  details.helper[open] summary{ border-bottom-left-radius:0; border-bottom-right-radius:0; }
+  .helper-body{
+    font-size:0.86rem;color:var(--sub);
+    background:var(--indigo-bg);
+    border:1.5px solid var(--indigo-border);border-top:none;
+    border-bottom-left-radius:12px;border-bottom-right-radius:12px;
+    padding:14px 16px 16px;
+  }
   .helper-body p{margin:0 0 10px;}
   .checklist label{
     display:flex;gap:8px;align-items:flex-start;font-size:0.86rem;
     color:var(--sub);margin-bottom:9px;line-height:1.5;
   }
   .checklist input{margin-top:3px;flex-shrink:0;}
-  .helper-note{font-size:0.78rem;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--panel2);}
+  .helper-note{font-size:0.78rem;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.06);}
   .ref-list{margin:0;padding-left:18px;}
   .ref-list li{font-size:0.86rem;color:var(--sub);margin-bottom:9px;line-height:1.5;}
-  details.result-helper{border-top:none;margin-top:16px;padding-top:0;}
-  details.result-helper summary{color:var(--orange);}
+  details.result-helper{margin-top:16px;}
+  details.result-helper summary{color:var(--orange);background:var(--orange-bg);border-color:var(--orange-border);}
+  details.result-helper summary:hover{background:#ffedd5;border-color:#ea580c;}
+  details.result-helper summary .tap-hint{color:var(--orange);}
+  details.result-helper .helper-body{background:var(--orange-bg);border-color:var(--orange-border);}
 
   .back-btn{
     display:inline-block;margin-top:18px;font-size:0.84rem;color:var(--muted);
@@ -235,7 +269,7 @@
         checklistHtml += '<label><input type="checkbox" data-chk="'+(i+1)+'"> '+item.detail+'（'+item.label+'）</label>';
       });
       var helper =
-        '<details class="helper"><summary>自信がない方は「その場でできる身体チェック」</summary>' +
+        '<details class="helper"><summary><span>自信がない方は「その場でできる身体チェック」</span><span class="tap-hint">タップして開く</span></summary>' +
         '<div class="helper-body">' +
         '<p>次の4つが目安です。当てはまらないものがあれば、無理に「はい」を選ばなくても大丈夫です。</p>' +
         '<div class="checklist">' + checklistHtml + '</div>' +
@@ -358,7 +392,7 @@
       BODY_CHECK_ITEMS.forEach(function(item){
         refListHtml += '<li><b>'+item.label+'</b>：'+item.detail+'</li>';
       });
-      html += '<details class="helper result-helper"><summary>自走式について：自走できるかどうかの判断基準</summary>' +
+      html += '<details class="helper result-helper"><summary><span>自走式について：自走できるかどうかの判断基準</span><span class="tap-hint">タップして開く</span></summary>' +
         '<div class="helper-body">' +
         '<p>「自走式」という結果が出た場合も、実際にご本人が無理なくこげるかは、購入前に次の4点を目安に確認しておくと安心です。</p>' +
         '<ul class="ref-list">' + refListHtml + '</ul>' +

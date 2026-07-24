@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>車椅子タイプ診断｜自走式・介助式のどちらが合う？ - 介福本舗</title>
+<style>
+  /* 介福本舗コーポレートサイト（kaifukuhonpo.com）のトンマナに合わせた配色
+     ブラウン＝ブランドのインク色／ゴールド＝プライマリアクセント／オレンジ＝セカンダリアクセント（自走式） */
+  :root{
+    --brown:#67341e;
+    --brown-soft:#7d5238;
+    --muted:#a6876a;
+    --gold:#fdd014;
+    --gold-dark:#e0ad00;
+    --gold-bg:#fff7d6;
+    --orange:#ee7800;
+    --orange-dark:#c96200;
+    --orange-bg:#fff1de;
+    --help-border:#b08355;
+    --help-bg:#f3e9db;
+    --amber:#8a5a2e;
+    --amber-bg:#fbf1de;
+    --amber-border:#d9a860;
+    --ink:#4a2e15;
+    --sub:#7d5238;
+    --line:#e9ddc6;
+    --panel:#fbf6ea;
+    --panel2:#f3ead6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:#faf5e8;
+    color:var(--ink);
+    padding:24px 14px 60px;
+  }
+  .wrap{max-width:600px;margin:0 auto;}
+  header.page{text-align:center;margin-bottom:16px;}
+  header.page h1{font-size:1.5rem;margin:0 0 6px;color:var(--brown);font-weight:800;}
+  header.page p{font-size:0.92rem;color:var(--sub);margin:0;}
+
+  .notice-box{
+    max-width:600px;margin:0 auto 18px;
+    background:var(--amber-bg);border:1.5px solid var(--amber-border);
+    border-radius:14px;padding:13px 16px;
+    font-size:0.82rem;color:var(--amber);line-height:1.7;text-align:left;
+  }
+  .notice-box b{display:block;font-size:0.78rem;font-weight:700;margin-bottom:4px;color:var(--brown);}
+
+  .progress{display:flex;justify-content:center;gap:8px;margin:0 0 22px;}
+  .progress .dot{width:9px;height:9px;border-radius:50%;background:var(--line);transition:background .2s;}
+  .progress .dot.done{background:var(--gold-dark);}
+  .progress .dot.current{background:var(--orange);}
+
+  .card{
+    background:#fffdf8;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:28px 22px;
+    box-shadow:0 2px 10px rgba(103,52,30,0.06);
+  }
+  .qno{
+    display:inline-block;font-size:0.72rem;font-weight:700;color:var(--brown);
+    background:var(--panel2);border-radius:20px;padding:3px 12px;margin-bottom:12px;
+    letter-spacing:.02em;
+  }
+  .question{font-size:1.18rem;line-height:1.6;margin:0 0 8px;font-weight:700;color:var(--brown);}
+  .question-sub{font-size:0.86rem;color:var(--muted);margin:0 0 18px;line-height:1.6;}
+  .pre-note{
+    font-size:0.82rem;color:var(--sub);background:var(--panel2);
+    border-radius:14px;padding:12px 14px;margin:0 0 18px;line-height:1.7;
+  }
+  .choices{display:flex;flex-direction:column;gap:10px;}
+  .choice-btn{
+    display:block;width:100%;text-align:left;
+    font-size:1rem;line-height:1.5;
+    padding:15px 18px;border-radius:16px;border:1.5px solid var(--line);
+    background:var(--panel);color:var(--ink);cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .choice-btn:hover{border-color:var(--gold-dark);background:var(--gold-bg);}
+  .choice-btn .sub{display:block;font-size:0.82rem;color:var(--muted);margin-top:3px;font-weight:400;}
+
+  details.helper{margin-top:18px;}
+  details.helper summary{
+    cursor:pointer;list-style:none;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-size:0.92rem;font-weight:700;color:var(--brown);
+    background:var(--help-bg);
+    border:1.5px solid var(--help-border);
+    border-radius:14px;
+    padding:13px 16px;
+    transition:background .15s, border-color .15s;
+  }
+  details.helper summary:hover{background:#ecdcc4;border-color:var(--brown-soft);}
+  details.helper summary::-webkit-details-marker{display:none;}
+  details.helper summary > span:first-child{flex:1 1 auto;min-width:0;}
+  details.helper summary .tap-hint{
+    font-size:0.74rem;font-weight:600;color:var(--brown);opacity:0.75;
+    white-space:nowrap;flex-shrink:0;
+  }
+  @media (max-width:400px){
+    details.helper summary .tap-hint{display:none;}
+  }
+  details.helper summary::after{
+    content:"";
+    width:8px;height:8px;flex-shrink:0;
+    border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+    transform:rotate(45deg);
+    transition:transform .2s;
+  }
+  details.helper[open] summary::after{ transform:rotate(-135deg); }
+  details.helper[open] summary{ border-bottom-left-radius:0; border-bottom-right-radius:0; }
+  .helper-body{
+    font-size:0.86rem;color:var(--sub);
+    background:var(--help-bg);
+    border:1.5px solid var(--help-border);border-top:none;
+    border-bottom-left-radius:14px;border-bottom-right-radius:14px;
+    padding:14px 16px 16px;
+  }
+  .helper-body p{margin:0 0 10px;}
+  .checklist label{
+    display:flex;gap:8px;align-items:flex-start;font-size:0.86rem;
+    color:var(--sub);margin-bottom:9px;line-height:1.5;
+  }
+  .checklist input{margin-top:3px;flex-shrink:0;accent-color:var(--brown);}
+  .helper-note{font-size:0.78rem;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid rgba(103,52,30,0.12);}
+  .ref-list{margin:0;padding-left:18px;}
+  .ref-list li{font-size:0.86rem;color:var(--sub);margin-bottom:9px;line-height:1.5;}
+
+  .suggest-box{
+    margin-top:12px;background:var(--orange-bg);border:1.5px solid var(--orange);
+    border-radius:14px;padding:13px 16px;font-size:0.86rem;color:var(--orange-dark);line-height:1.6;
+  }
+  .suggest-box button{
+    margin-top:10px;display:inline-block;font-size:0.82rem;font-weight:700;
+    color:#fff;background:var(--orange);border:none;border-radius:40px;
+    padding:9px 16px;cursor:pointer;
+  }
+
+  .back-btn{
+    display:inline-block;margin-top:18px;font-size:0.84rem;color:var(--muted);
+    background:none;border:none;cursor:pointer;padding:4px 0;
+  }
+  .back-btn:hover{color:var(--brown);}
+
+  /* Result */
+  .result-badge{
+    display:inline-block;font-size:0.78rem;font-weight:700;color:var(--muted);
+    letter-spacing:.05em;margin-bottom:6px;
+  }
+  .result-title{font-size:1.9rem;font-weight:800;margin:0 0 10px;}
+  .result-title.self{color:var(--orange);}
+  .result-title.help{color:var(--brown);}
+  .result-reason{font-size:0.95rem;color:var(--sub);line-height:1.7;margin:0 0 6px;}
+  .result-note{
+    font-size:0.82rem;color:var(--sub);background:var(--panel2);
+    border-radius:14px;padding:12px 14px;margin:14px 0 6px;line-height:1.6;
+  }
+  .result-note.warn{background:var(--amber-bg);color:var(--amber);}
+  .result-note.warn b{display:block;font-size:0.8rem;margin-bottom:3px;color:var(--brown);}
+
+  .products{margin-top:22px;display:flex;flex-direction:column;gap:12px;}
+  .product-card{
+    display:block;border:1.5px solid var(--line);border-radius:16px;
+    padding:16px 18px;text-decoration:none;color:inherit;
+    transition:border-color .15s, transform .1s;
+  }
+  .product-card:hover{border-color:var(--orange);}
+  .product-card.primary{border-color:var(--orange);background:var(--orange-bg);}
+  .product-card.primary.help-type{border-color:var(--gold-dark);background:var(--gold-bg);}
+  .product-tag{font-size:0.7rem;font-weight:700;color:#fff;background:var(--orange);
+    border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:8px;}
+  .product-tag.help-type{background:var(--gold-dark);color:var(--brown);}
+  .product-name{font-size:1rem;font-weight:700;margin:0 0 4px;color:var(--brown);}
+  .product-feature{font-size:0.85rem;color:var(--sub);margin:0 0 6px;}
+  .product-price{font-size:0.95rem;font-weight:700;color:var(--ink);}
+  .product-link-hint{font-size:0.78rem;color:var(--muted);margin-top:6px;}
+
+  .checklist-block{margin-top:22px;border-top:1px solid var(--line);padding-top:18px;}
+  .checklist-block h3{font-size:0.98rem;margin:0 0 4px;color:var(--brown);}
+  .checklist-block .lead{font-size:0.82rem;color:var(--muted);margin:0 0 14px;line-height:1.6;}
+  .checklist-result{margin-top:12px;font-size:0.85rem;color:var(--brown);background:var(--help-bg);
+    border-radius:14px;padding:12px 14px;line-height:1.7;display:none;}
+  .checklist-result.show{display:block;}
+  .checklist-result ul{margin:6px 0 0;padding-left:18px;}
+
+  .restart-btn{
+    display:block;width:100%;margin-top:24px;padding:14px;border-radius:40px;
+    border:1.5px solid var(--gold-dark);background:var(--gold);color:var(--brown);
+    font-size:0.9rem;font-weight:700;cursor:pointer;
+  }
+  .restart-btn:hover{background:var(--gold-dark);}
+
+  footer.page{
+    max-width:600px;margin:26px auto 0;font-size:0.76rem;color:var(--muted);
+    line-height:1.7;text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <h1>車椅子タイプ診断</h1>
+    <p>いくつかの質問に答えるだけで、自走式・介助式どちらが合うかの目安がわかります</p>
+  </header>
+  <div class="notice-box">
+    <b>ご注意</b>
+    寝たきりの方、座位を保つことが難しい方、足に拘縮や変形がある方など、座って使うことを前提とした一般的な車椅子が身体的に適さない可能性がある場合、本診断ではうまくご案内できないことがあります。その場合は本診断を進めずに、福祉用具専門相談員へ直接ご相談ください。
+  </div>
+  <div class="progress" id="progress"></div>
+  <div id="app"></div>
+  <footer class="page">
+    この診断結果はあくまで参考です。ご心配な点があれば、福祉用具専門相談員にご相談ください。
+  </footer>
+</div>
+
+<script>
+(function(){
+
+  // ---- Product catalog (介福本舗 楽天市場店 2026-07-15時点) ----
+  var PRODUCTS = {
+    selfStandard: { name:"TORICO よかセレクト 自走式 TRC22-SL-001", feature:"軽量・コンパクト", price:"26,800円",
+                  url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0002/", type:"self" },
+    selfMulti:  { name:"TORICO よかべスター 自走式 TRC22-BS-001", feature:"多機能（肘跳ね上げ・脚部スイングアウト）", price:"34,800円",
+                  url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0001/", type:"self" },
+    helpStandard: { name:"TORICO よかセレクト 介助式 TRC16-SL-001", feature:"軽量・コンパクト", price:"26,800円",
+                  url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0003/", type:"help" },
+    helpMulti:  { name:"TORICO よかべスター 介助式 TRC16-BS-001", feature:"多機能（肘掛け跳ね上げ＋脚部開閉・背張り調整）", price:"34,800円",
+                  url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0008/", type:"help" },
+    helpUltra:  { name:"カワムラサイクル 旅ぐるま KA6", feature:"より軽量・小型（シートベルト無し）", price:"37,800円",
+                  url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0006/", type:"help" }
+  };
+
+  // ---- Q1補足：その場でできる身体チェック ----
+  var BODY_CHECK_ITEMS = [
+    { label:"座ったときのバランス", detail:"支えなしで座った姿勢を保てる、かがんでも自分で戻れる" },
+    { label:"手の力", detail:"ペットボトルのフタを開けられる、タオルをしっかり握れる（ブレーキ操作にも関わります）" },
+    { label:"腕を動かす力と範囲", detail:"腕を前後に繰り返し動かしても、肩・肘・手首に痛みが出ない" },
+    { label:"繰り返しても疲れないか", detail:"同じ動作を繰り返してもすぐには疲れない（持久力）" }
+  ];
+
+  // ---- 介助式・任意チェックリスト（多機能型フィット確認） ----
+  var HELP_CHECK_ITEMS = [
+    { key:"transfer", label:"ベッドや車から車椅子への移乗が多い", feature:"肘掛け跳ね上げ＋脚部開閉で移乗動作がしやすくなります" },
+    { key:"posture",  label:"円背（背中が丸まっている）や姿勢保持に不安がある", feature:"背張り調整機能で楽な姿勢を保てます" },
+    { key:"back",     label:"介助者に腰痛など身体的負担がある", feature:"後輪が座面より低い構造で、押す・移乗させる動作の負担が軽くなります" },
+    { key:"rain",     label:"雨天や屋外での使用が多い", feature:"ドラムブレーキで雨天でも安定して効きます" },
+    { key:"long",     label:"外出頻度が高く、長時間座ることが多い", feature:"クッション性・各種調整機能で疲れにくくなります" }
+  ];
+
+  // ---- State ----
+  function freshState(){
+    return {
+      step: "q1",
+      group: null,      // "self" | "help"
+      reason: null,     // "always" | "I" | "II-yes" | "II-no" | "III" | "IV" | "V"
+      qtype: null,      // "standard" | "multi"
+      backFrom: null,
+      totalSteps: 2,
+      bodyCheckUsed: false,
+      bodyCheckCount: 0
+    };
+  }
+  var state = freshState();
+
+  var app = document.getElementById("app");
+  var progressEl = document.getElementById("progress");
+
+  var STEP_DEPTH = { q1:1, q1b:2, q1b2:3, q2:99, result:0 }; // q2 depth resolved via state.totalSteps
+
+  function renderProgress(){
+    if(state.step === "result"){ progressEl.innerHTML = ""; return; }
+    var current = (state.step === "q2") ? state.totalSteps : STEP_DEPTH[state.step];
+    var html = "";
+    for(var i=1;i<=state.totalSteps;i++){
+      var cls = "dot";
+      if(i < current) cls += " done";
+      if(i === current) cls += " current";
+      html += '<span class="'+cls+'"></span>';
+    }
+    progressEl.innerHTML = html;
+  }
+
+  function qCard(qno, question, questionSub, preNoteHtml, choices, helperHtml, backTo){
+    var html = '<div class="card">';
+    html += '<span class="qno">'+qno+'</span>';
+    html += '<p class="question">'+question+'</p>';
+    if(questionSub) html += '<p class="question-sub">'+questionSub+'</p>';
+    if(preNoteHtml) html += '<div class="pre-note">'+preNoteHtml+'</div>';
+    html += '<div class="choices">';
+    choices.forEach(function(c, idx){
+      html += '<button class="choice-btn" data-idx="'+idx+'"><span>'+c.label+'</span>';
+      if(c.sub) html += '<span class="sub">'+c.sub+'</span>';
+      html += '</button>';
+    });
+    html += '</div>';
+    if(helperHtml) html += helperHtml;
+    if(backTo) html += '<button class="back-btn" id="backBtn">← 前の質問に戻る</button>';
+    html += '</div>';
+    app.innerHTML = html;
+
+    var btns = app.querySelectorAll(".choice-btn");
+    btns.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        choices[parseInt(btn.getAttribute("data-idx"),10)].onSelect();
+        render();
+      });
+    });
+    if(backTo){
+      document.getElementById("backBtn").addEventListener("click", function(){
+        state.step = backTo;
+        render();
+      });
+    }
+  }
+
+  function render(){
+    renderProgress();
+
+    if(state.step === "q1"){
+      var checklistHtml = "";
+      BODY_CHECK_ITEMS.forEach(function(item, i){
+        checklistHtml += '<label><input type="checkbox" data-chk="'+i+'"> '+item.detail+'（'+item.label+'）に不安がある</label>';
+      });
+      var helper =
+        '<details class="helper"><summary><span>自信がない方は「その場でできる身体チェック」</span><span class="tap-hint">タップして開く</span></summary>' +
+        '<div class="helper-body">' +
+        '<p>次の4項目が、自走式を無理なく利用できるかの目安です。不安に感じる項目があればチェックしてください（新しい分岐にはなりません）。</p>' +
+        '<div class="checklist">' + checklistHtml + '</div>' +
+        '<div id="bodyCheckSuggest"></div>' +
+        '<div class="helper-note">※医療的な診断ではなく目安です。不安な項目が1つの場合は、自走式という結果になっても軽量・コンパクトなタイプを優先してご案内します。</div>' +
+        '</div></details>';
+
+      qCard("Q1", "車椅子は誰が操作しますか？", null, null, [
+        { label:"常に介助者が操作する", sub:"介助式グループへ（このままQ2へ）",
+          onSelect:function(){ state.group="help"; state.reason="always"; state.totalSteps=2; state.step="q2"; state.backFrom="q1"; } },
+        { label:"乗る人自身が操作する", sub:"使用シーンを確認するQ1-bへ",
+          onSelect:function(){ state.step="q1b"; } }
+      ], helper);
+
+      var boxes = app.querySelectorAll('.checklist input[type="checkbox"]');
+      function refreshBodyCheck(){
+        var all = app.querySelectorAll('.checklist input[type="checkbox"]');
+        var count = 0;
+        all.forEach(function(x){ if(x.checked) count++; });
+        state.bodyCheckUsed = true;
+        state.bodyCheckCount = count;
+        var suggest = document.getElementById("bodyCheckSuggest");
+        if(count >= 2){
+          suggest.innerHTML = '<div class="suggest-box">座位や腕の力、ブレーキ操作など複数の項目に不安があるようです。この場合は「常に介助者が操作する」への変更をおすすめします。' +
+            '<button id="switchToHelper">常に介助者が操作するに変更する</button></div>';
+          document.getElementById("switchToHelper").addEventListener("click", function(){
+            state.group="help"; state.reason="always"; state.totalSteps=2; state.step="q2"; state.backFrom="q1";
+            render();
+          });
+        } else {
+          suggest.innerHTML = "";
+        }
+      }
+      boxes.forEach(function(b){ b.addEventListener("change", refreshBodyCheck); });
+      return;
+    }
+
+    if(state.step === "q1b"){
+      var preNote = "「自走式は、こぐためのハンドリムがある分だけ介助式より一回り大きく、重くなります。『思ったより大きかった』『重たかった』というお声をいただくこともあるため、以下の質問で実際の使用シーンを確認しておくと安心です。」";
+      qCard("Q1-b", "車椅子を使う主な場面は？", "乗る人自身が操作すると答えた場合のみの質問です。ご自身の希望を、実際に使う場面に照らして確認します。", preNote, [
+        { label:"屋内外問わず、日常的にいろいろな場面で自分の力で動きたい", sub:"買い物・散歩・庭先の移動など",
+          onSelect:function(){ state.group="self"; state.reason="I"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
+        { label:"外出はほとんど付き添ってもらうが、自宅の中だけは自分で移動したい", sub:"家族を呼ばずに屋内だけ自走したい",
+          onSelect:function(){ state.totalSteps=4; state.step="q1b2"; } },
+        { label:"通院やデイサービスの送迎など、決まった外出の時だけ使う予定", sub:"普段は杖や伝い歩きである程度歩ける",
+          onSelect:function(){ state.group="help"; state.reason="III"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
+        { label:"家族との買い物・外食・旅行などたまの外出で使う予定", sub:"普段の歩行には不安がある",
+          onSelect:function(){ state.group="help"; state.reason="IV"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
+        { label:"まだ使う場面がはっきり決まっていない・その他",
+          onSelect:function(){ state.group="self"; state.reason="V"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } }
+      ], null, "q1");
+      return;
+    }
+
+    if(state.step === "q1b2"){
+      qCard("Q1-b-II", "自宅の中は、車椅子を使わずに移動できますか？", "杖や伝い歩き、手すり、スロープなどを使った場合を想定してお答えください。", null, [
+        { label:"できる", sub:"車椅子がなくても室内は移動できる",
+          onSelect:function(){ state.group="help"; state.reason="II-yes"; state.step="q2"; state.backFrom="q1b2"; } },
+        { label:"できない", sub:"車椅子がないと室内移動が難しい",
+          onSelect:function(){ state.group="self"; state.reason="II-no"; state.step="q2"; state.backFrom="q1b2"; } }
+      ], null, "q1b");
+      return;
+    }
+
+    if(state.step === "q2"){
+      qCard("Q2", "移乗（車椅子⇄ベッド・トイレなど）は自分で立ち上がってできますか？",
+        "自走式・介助式どちらのグループでも共通の質問です。標準型／多機能型の分岐に使います。",
+        "立ち上がれる＝手すりや肘掛けにつかまれば、介助者が体を支えなくても移乗できる（見守りだけで足りる）。難しい＝介助者が体を支える・抱きかかえるなど身体的な介助が必要。",
+        [
+          { label:"自分で立ち上がって移乗できる", sub:"見守りだけで足りる", onSelect:function(){ state.qtype="standard"; state.step="result"; } },
+          { label:"立ち上がるのが難しく、移乗が大変", sub:"介助者が身体的に支える必要がある", onSelect:function(){ state.qtype="multi"; state.step="result"; } }
+        ], null, state.backFrom);
+      return;
+    }
+
+    if(state.step === "result"){
+      renderResult();
+      return;
+    }
+  }
+
+  var REASON_TEXT = {
+    "always": "常に介助者が車椅子を操作されるとのことですので、介助式のグループでご案内します。",
+    "I":      "屋内外問わず日常的に自分の力で動きたいとのことですので、自走ニーズが明確です。自走式のままご案内します。",
+    "V":      "まだ使う場面が決まっていないとのことですので、どちらかに無理に誘導せず、自走式のままご案内します。",
+    "III":    "通院やデイサービスなど決まった外出だけで、普段はある程度歩けるとのことですので、自走機能を使う場面は実はあまり多くないと考えられます。実際に専門の相談員が詳しくお話をうかがうと、このようなケースでは介助式の方が使いやすいという結論になることが多くあります。軽量な介助式であれば、いざという時の介助者の負担も少なく済みます。",
+    "IV":     "たまの外出であれば、ご家族が近くにいることが多いと考えられます。その場合、自走式の幅・重さがかえって取り回しの負担になることがあり、実際のご相談でも介助式の方が扱いやすいという結論になるケースが多くあります。",
+    "II-yes": "室内は車椅子がなくても移動できるとのことですので、車椅子そのものを自宅内で自走する場面は実はあまり多くないと考えられます。外出時は付き添いが前提であれば、介助式の方が扱いやすく、いざという時の介助者の負担も少なく済みます。",
+    "II-no":  "自宅の中で車椅子がないと移動が難しいとのことですので、屋内での自走ニーズがあると考えられます。自走式のままご案内します。"
+  };
+
+  function productCard(p, tagLabel, isPrimary){
+    var typeClass = p.type === "help" ? " help-type" : "";
+    var cardClass = "product-card" + (isPrimary ? " primary" + typeClass : "");
+    var tagClass = "product-tag" + typeClass;
+    return '<a class="'+cardClass+'" href="'+p.url+'" target="_blank" rel="noopener">' +
+      '<span class="'+tagClass+'">'+tagLabel+'</span>' +
+      '<p class="product-name">'+p.name+'</p>' +
+      '<p class="product-feature">'+p.feature+'</p>' +
+      '<p class="product-price">'+p.price+'</p>' +
+      '<p class="product-link-hint">商品ページを見る →</p>' +
+      '</a>';
+  }
+
+  function renderResult(){
+    var isSelf = state.group === "self";
+    var isMulti = state.qtype === "multi";
+    var title = isSelf ? "自走式" : "介助式";
+    var titleClass = isSelf ? "result-title self" : "result-title help";
+    var subTitle = isMulti ? "多機能型（よかべスター）" : "標準型（よかセレクト）";
+
+    var html = '<div class="card">';
+    html += '<span class="result-badge">診断結果</span>';
+    html += '<p class="'+titleClass+'">'+title+'・'+subTitle+'</p>';
+    html += '<p class="result-reason">'+(REASON_TEXT[state.reason]||"")+'</p>';
+
+    // Q2 boundary note
+    html += '<div class="result-note">判断の境界線：介助者が身体的に支える必要があるかどうか。' +
+      (isMulti ? "肘跳ね上げ・脚部スイングアウトなどの機構で移乗をサポートする多機能型が向いています。" : "見守りだけで足りるため、標準型で十分です。") + '</div>';
+
+    if(!isSelf && (state.reason==="III" || state.reason==="IV" || state.reason==="II-yes")){
+      html += '<div class="result-note">結果に納得できない場合のために、<a href="'+PRODUCTS.selfStandard.url+'" target="_blank" rel="noopener">自走式の商品ページ</a>もあわせてご案内します。</div>';
+    }
+
+    if(state.reason === "II-no"){
+      html += '<div class="result-note warn"><b>屋内での取り回しについて</b>自走式はハンドリムの分だけ幅を取り、屋内の狭い場所では小回りが利きにくい点にご注意ください。通路幅・回転スペースを事前にご確認いただくと安心です。</div>';
+    }
+
+    if(isSelf && state.bodyCheckUsed && state.bodyCheckCount === 1){
+      html += '<div class="result-note">身体チェックで気になる項目が1つあったため、通常タイプより軽量・コンパクトなモデルを優先してご案内します。</div>';
+    }
+
+    if(isSelf){
+      html += '<div class="result-note warn"><b>①サイズ・設置場所のご確認</b>ご購入前に、実際に車椅子を使う場所（玄関・廊下の幅など）や、車に載せる場合はトランクのサイズもあわせてご確認ください。</div>';
+    }
+
+    // ---- product recommendation ----
+    html += '<div class="products">';
+    if(isSelf){
+      var preferLight = state.bodyCheckUsed && state.bodyCheckCount === 1;
+      if(isMulti){
+        html += productCard(PRODUCTS.selfMulti, "おすすめ", true);
+      } else {
+        html += productCard(PRODUCTS.selfStandard, "おすすめ", true);
+        if(!preferLight){
+          html += productCard(PRODUCTS.selfMulti, "多機能タイプもご検討の方に", false);
+        }
+      }
+    } else {
+      if(isMulti){
+        html += productCard(PRODUCTS.helpMulti, "おすすめ", true);
+      } else {
+        html += productCard(PRODUCTS.helpStandard, "おすすめ", true);
+        // 旅ぐるまKA6は長距離移動・日常使用には不向きなため、
+        // 「たまの外出・旅行で念のため持っていきたい」(Q1-b IV)に該当する場合のみ参考提示する
+        if(state.reason === "IV"){
+          html += productCard(PRODUCTS.helpUltra, "旅行など、たまの外出で念のため持っていきたい方に（より軽量・普段使いには非推奨）", false);
+        }
+      }
+    }
+    html += '</div>';
+
+    // ---- note② future health change: at the very end, right before final confirmation, self-propelled only ----
+    if(isSelf){
+      html += '<div class="result-note warn"><b>②今後の身体状況の変化について</b>今のところ自走式が合っていても、進行性の病気などで今後身体状況が変わる可能性がある場合は、将来的に介助式への切り替えが必要になることがあります。ご不安な場合は、介助式もあわせてご検討いただくか、福祉用具専門相談員にご相談ください。</div>';
+    }
+
+    // ---- optional checklist (介助式の結果画面のみ) ----
+    if(!isSelf){
+      var itemsHtml = "";
+      HELP_CHECK_ITEMS.forEach(function(item){
+        itemsHtml += '<label><input type="checkbox" data-help-chk="'+item.key+'"> '+item.label+'</label>';
+      });
+      html += '<div class="checklist-block">' +
+        '<h3>さらに自分に合うタイプを探す（任意）</h3>' +
+        '<p class="lead">当てはまる項目があれば教えてください。多機能型（よかべスター）が向いているかどうかを、より具体的に確認できます。※チェックしなくても上記の結果は変わりません。</p>' +
+        '<div class="checklist">' + itemsHtml + '</div>' +
+        '<div class="checklist-result" id="helpChecklistResult"></div>' +
+        '</div>';
+    }
+
+    html += '<div class="result-note">この診断結果はあくまで参考です。ご心配な点があれば、福祉用具専門相談員にご相談ください。</div>';
+
+    html += '<button class="restart-btn" id="restartBtn">もう一度診断する</button>';
+    html += '</div>';
+    app.innerHTML = html;
+
+    if(!isSelf){
+      var helpBoxes = app.querySelectorAll('.checklist input[data-help-chk]');
+      helpBoxes.forEach(function(b){
+        b.addEventListener("change", function(){
+          var checked = [];
+          helpBoxes.forEach(function(x){
+            if(x.checked){
+              var found = HELP_CHECK_ITEMS.filter(function(it){ return it.key === x.getAttribute("data-help-chk"); })[0];
+              if(found) checked.push(found);
+            }
+          });
+          var resultEl = document.getElementById("helpChecklistResult");
+          if(checked.length === 0){
+            resultEl.className = "checklist-result";
+            resultEl.innerHTML = "";
+            return;
+          }
+          var listHtml = "<ul>" + checked.map(function(it){ return "<li>"+it.feature+"</li>"; }).join("") + "</ul>";
+          if(isMulti){
+            resultEl.innerHTML = "<b>多機能型（よかべスター）が向いている理由</b>" + listHtml;
+          } else {
+            resultEl.innerHTML = "移乗のしやすさ以外にも当てはまる点があるようです。多機能型（よかべスター 介助式）も候補に加えてご検討ください。" + listHtml +
+              productCard(PRODUCTS.helpMulti, "多機能型もご検討の方に", false);
+          }
+          resultEl.className = "checklist-result show";
+        });
+      });
+    }
+
+    document.getElementById("restartBtn").addEventListener("click", function(){
+      state = freshState();
+      render();
+    });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

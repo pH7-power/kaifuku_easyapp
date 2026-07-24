@@ -1,0 +1,344 @@
+<svg viewBox="0 0 1640 2420" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans CJK JP','Noto Sans JP','Hiragino Kaku Gothic ProN','Hiragino Sans','Droid Sans Fallback',sans-serif" role="img">
+<title>車椅子タイプ診断ロジック フローチャート（改訂11準拠・MD全内容版）</title>
+<desc>車椅子タイプ診断ロジック仕様書の全内容を反映したフローチャート</desc>
+<defs>
+  <marker id="ar-gray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#64748b"/></marker>
+  <marker id="ar-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#ea580c"/></marker>
+  <marker id="ar-indigo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#4f46e5"/></marker>
+  <marker id="ar-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#f59e0b"/></marker>
+</defs>
+<style>
+  .title{font-size:24px;font-weight:700;fill:var(--foreground,#1e293b);}
+  .subtitle{font-size:13px;fill:var(--muted-foreground,#64748b);}
+  .lbl{font-size:14.5px;font-weight:700;fill:var(--foreground,#1e293b);}
+  .lblS{font-size:13px;font-weight:700;fill:var(--foreground,#1e293b);}
+  .txt{font-size:11.6px;fill:var(--foreground,#334155);}
+  .txtC{font-size:11.6px;fill:var(--foreground,#334155);text-anchor:middle;}
+  .note{font-size:11px;fill:var(--muted-foreground,#475569);}
+  .noteC{font-size:11px;fill:var(--muted-foreground,#475569);text-anchor:middle;}
+  .tag{font-size:10.8px;font-weight:700;fill:var(--muted-foreground,#64748b);}
+  .roman{font-size:13px;font-weight:700;}
+  .sec{font-size:12.3px;font-weight:700;fill:var(--foreground,#1e293b);}
+  .arrowlbl{font-size:10.5px;fill:var(--muted-foreground,#64748b);}
+</style>
+
+<rect x="0" y="0" width="1640" height="2420" fill="var(--background,#ffffff)"/>
+
+<!-- Title -->
+<text x="820" y="34" text-anchor="middle" class="title">車椅子タイプ診断ロジック フローチャート（改訂11・MD全内容準拠）</text>
+<text x="820" y="54" text-anchor="middle" class="subtitle">車椅子タイプ診断ロジック_仕様書.md（2026-07-17改訂11）の全セクションを反映</text>
+
+<!-- Start -->
+<ellipse cx="820" cy="92" rx="85" ry="24" fill="var(--muted,#f1f5f9)" stroke="var(--border,#94a3b8)" stroke-width="1.5"/>
+<text x="820" y="96" text-anchor="middle" class="lblS">診断スタート</text>
+
+<!-- Intro note -->
+<rect x="330" y="128" width="980" height="70" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3" stroke-dasharray="5,3"/>
+<text x="345" y="147" class="note">アプリ冒頭のリード文（Q1の前、全員共通）：「いくつかの質問に答えるだけで、自走式・介助式どちらが合うかの目安がわかります。」（中立な案内文）</text>
+<text x="345" y="163" class="note">「この診断はあくまで参考です。ご心配な点があれば、購入前に福祉用具専門相談員にご相談ください。」（結果画面にも同趣旨を改めて表示＝下記③）</text>
+<line x1="820" y1="116" x2="820" y2="128" stroke="var(--border,#94a3b8)" stroke-width="1.5" marker-end="url(#ar-gray)"/>
+
+<!-- Q1 box -->
+<rect x="565" y="222" width="500" height="62" rx="8" fill="var(--muted,#f1f5f9)" stroke="var(--border,#475569)" stroke-width="1.6"/>
+<text x="815" y="248" text-anchor="middle" class="lbl">Q1. 車椅子は誰が操作しますか？</text>
+<text x="815" y="266" text-anchor="middle" class="note">（自走式・介助式の大枠を決める、核となる唯一の一次分岐）</text>
+<line x1="820" y1="198" x2="820" y2="222" stroke="var(--border,#94a3b8)" stroke-width="1.5" marker-end="url(#ar-gray)"/>
+
+<!-- Q1 body-check note (beside Q1) -->
+<rect x="1095" y="204" width="500" height="160" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3" stroke-dasharray="5,3"/>
+<text x="1110" y="222" class="sec">Q1補足：その場でできる身体チェック（新しい分岐は作らない）</text>
+<text x="1110" y="240" class="note">座位バランス／手の力／腕の力と可動域／疲労耐性</text>
+<text x="1110" y="255" class="note">（＋ブレーキ操作の注意も一文で添える）</text>
+<text x="1110" y="274" class="note">・全て問題ない → そのままQ1-bへ</text>
+<text x="1110" y="289" class="note">・1つ不安 → 軽量な「よかセレクト」を優先案内</text>
+<text x="1110" y="304" class="note">・座位不安定／腕を動かせない・握れない等</text>
+<text x="1110" y="319" class="note">　→「常に介助者が操作する」への変更を提案</text>
+<text x="1110" y="338" class="note">※この身体チェックが、自走式を利用できる状態かの</text>
+<text x="1110" y="352" class="note">　具体的な判断基準にあたる（8章）</text>
+<line x1="1065" y1="253" x2="1095" y2="253" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3"/>
+
+<!-- Branch tags -->
+<rect x="70" y="392" width="320" height="50" rx="8" fill="var(--indigo-100,#e0e7ff)" stroke="var(--indigo-500,#6366f1)" stroke-width="1.5"/>
+<text x="230" y="414" text-anchor="middle" class="lblS">常に介助者が操作する</text>
+<text x="230" y="430" text-anchor="middle" class="note">→ 介助式グループ（このままQ2へ）</text>
+
+<rect x="1250" y="392" width="320" height="50" rx="8" fill="var(--orange-100,#ffedd5)" stroke="var(--orange-500,#f97316)" stroke-width="1.5"/>
+<text x="1410" y="414" text-anchor="middle" class="lblS">乗る人自身が操作する</text>
+<text x="1410" y="430" text-anchor="middle" class="note">→ Q1-bで使用シーンを裏取り（自己申告のため）</text>
+
+<path d="M665,284 L230,284 L230,392" fill="none" stroke="var(--indigo-500,#6366f1)" stroke-width="1.6" marker-end="url(#ar-indigo)"/>
+<path d="M965,284 L1410,284 L1410,392" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.6" marker-end="url(#ar-orange)"/>
+
+<!-- Left lane: 常に介助者 bypass to margin, avoids leaves entirely -->
+<path d="M230,442 L230,460 L15,460 L15,1290 L60,1298" fill="none" stroke="var(--indigo-400,#818cf8)" stroke-width="1.6" stroke-dasharray="2,3" marker-end="url(#ar-indigo)"/>
+<text x="20" y="900" class="arrowlbl" transform="rotate(-90 20 900)">Q1-bを経由せず直接Q2へ（介助式として確定）</text>
+
+<!-- Q1-b question -->
+<rect x="1110" y="450" width="510" height="66" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.5"/>
+<text x="1365" y="474" text-anchor="middle" class="lbl">Q1-b（乗る人自身が操作する場合のみ）</text>
+<text x="1365" y="492" text-anchor="middle" class="txtC">車椅子を使う主な場面は？（本アプリの核心的な質問）</text>
+<path d="M1410,442 L1410,450" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.6" marker-end="url(#ar-orange)"/>
+
+<!-- Q1-b pre-note -->
+<rect x="340" y="536" width="1170" height="60" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3" stroke-dasharray="5,3"/>
+<text x="355" y="558" class="note">Q1-bの前に表示する注記（全員共通）：「自走式は、こぐためのハンドリムがある分だけ介助式より一回り大きく、重くなります。『思ったより大きかった』『重たかった』</text>
+<text x="355" y="575" class="note">というお声をいただくこともあるため、以下の質問で実際の使用シーンを確認しておくと安心です。」</text>
+<path d="M1410,516 L1410,536" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.4" marker-end="url(#ar-orange)"/>
+
+<!-- 5 leaves in literal MD order I,II,III,IV,V -->
+<rect x="55" y="626" width="270" height="120" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="68" y="644" class="roman" fill="var(--orange-700,#c2410c)">I.</text>
+<text x="68" y="662" class="txt">屋内外問わず、日常的にいろいろな</text>
+<text x="68" y="677" class="txt">場面で自分の力で動きたい</text>
+<text x="68" y="692" class="txt">（買い物・散歩・庭先の移動など）</text>
+<text x="68" y="712" class="note">頻度：高い／場所：屋内外</text>
+<text x="68" y="726" class="note">→ 自走ニーズが明確</text>
+
+<rect x="355" y="626" width="270" height="120" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="368" y="644" class="roman" fill="var(--orange-700,#c2410c)">II.</text>
+<text x="368" y="662" class="txt">外出はほとんど付き添ってもらうが、</text>
+<text x="368" y="677" class="txt">自宅の中だけは家族を呼ばずに</text>
+<text x="368" y="692" class="txt">自分で移動したい</text>
+<text x="368" y="712" class="note">頻度：屋内限定／要裏取り</text>
+<text x="368" y="726" class="note">→ Q1-b-IIへ（下記）</text>
+
+<rect x="655" y="626" width="270" height="120" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="668" y="644" class="roman" fill="var(--orange-700,#c2410c)">III.</text>
+<text x="668" y="662" class="txt">通院・デイサービス送迎など決まった</text>
+<text x="668" y="677" class="txt">外出のみ使用予定／普段は杖・</text>
+<text x="668" y="692" class="txt">伝い歩き等である程度歩ける</text>
+<text x="668" y="712" class="note">頻度：低い／歩行能力：残っている</text>
+<text x="668" y="726" class="note">→ 介助式として確定</text>
+
+<rect x="955" y="626" width="270" height="120" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="968" y="644" class="roman" fill="var(--orange-700,#c2410c)">IV.</text>
+<text x="968" y="662" class="txt">家族との買い物・外食・旅行など</text>
+<text x="968" y="677" class="txt">たまの外出で使用予定／普段の</text>
+<text x="968" y="692" class="txt">歩行には不安がある</text>
+<text x="968" y="712" class="note">頻度：低い／歩行能力：不安</text>
+<text x="968" y="726" class="note">→ 介助式として確定</text>
+
+<rect x="1255" y="626" width="270" height="120" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="1268" y="644" class="roman" fill="var(--orange-700,#c2410c)">V.</text>
+<text x="1268" y="662" class="txt">まだ使う場面がはっきり決まって</text>
+<text x="1268" y="677" class="txt">いない・その他</text>
+<text x="1268" y="712" class="note">中立。無理に誘導しない</text>
+<text x="1268" y="726" class="note">→ 自走式のまま</text>
+
+<path d="M190,596 L190,626" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+<path d="M490,596 L490,626" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+<path d="M790,596 L790,626" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+<path d="M1090,596 L1090,626" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+<path d="M1390,596 L1390,626" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+
+<!-- Q1-b-II sub question, under leaf II, contained in column x355-625 -->
+<rect x="355" y="800" width="270" height="65" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4"/>
+<text x="490" y="818" text-anchor="middle" class="lblS">Q1-b-II（IIを選んだ場合のみ）</text>
+<text x="490" y="833" text-anchor="middle" class="txtC">自宅の中は、車椅子を使わずに</text>
+<text x="490" y="848" text-anchor="middle" class="txtC">（杖・手すり等で）移動できますか？</text>
+<path d="M490,746 L490,800" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.4" marker-end="url(#ar-orange)"/>
+
+<!-- III advisory note -->
+<rect x="655" y="800" width="270" height="150" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="668" y="818" class="sec">III向け結果画面の説明文</text>
+<text x="668" y="834" class="note">決まった外出のみで普段歩ける</text>
+<text x="668" y="848" class="note">→ 自走機能を使う場面は少ない。</text>
+<text x="668" y="862" class="note">詳しくヒアリングすると介助式で</text>
+<text x="668" y="876" class="note">十分という結論になることが</text>
+<text x="668" y="890" class="note">多い。軽量な介助式なら介助者</text>
+<text x="668" y="904" class="note">の負担も少ない。</text>
+<text x="668" y="922" class="tag" fill="var(--indigo-600,#4f46e5)">→ 介助式として確定（自動）</text>
+<path d="M790,746 L790,800" fill="none" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3" marker-end="url(#ar-amber)"/>
+
+<!-- IV advisory note -->
+<rect x="955" y="800" width="270" height="150" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="968" y="818" class="sec">IV向け結果画面の説明文</text>
+<text x="968" y="834" class="note">たまの外出は家族が近くに</text>
+<text x="968" y="848" class="note">いることが多い。自走式の幅・</text>
+<text x="968" y="862" class="note">重さがかえって取り回しの</text>
+<text x="968" y="876" class="note">負担になりうる。実際の相談</text>
+<text x="968" y="890" class="note">でも介助式の方が扱いやすい</text>
+<text x="968" y="904" class="note">という結論になることが多い。</text>
+<text x="968" y="922" class="tag" fill="var(--indigo-600,#4f46e5)">→ 介助式として確定（自動）</text>
+<path d="M1090,746 L1090,800" fill="none" stroke="var(--amber-400,#fbbf24)" stroke-width="1.3" marker-end="url(#ar-amber)"/>
+
+<!-- Q1-b-II outcomes: side by side, contained in column x355-625 -->
+<rect x="355" y="890" width="125" height="80" rx="8" fill="var(--indigo-100,#e0e7ff)" stroke="var(--indigo-500,#6366f1)" stroke-width="1.5"/>
+<text x="417" y="911" text-anchor="middle" class="lblS">できる</text>
+<text x="417" y="927" text-anchor="middle" class="note">車椅子なしで</text>
+<text x="417" y="940" text-anchor="middle" class="note">室内移動できる</text>
+<text x="417" y="957" text-anchor="middle" class="tag" fill="var(--indigo-600,#4f46e5)">→介助式確定</text>
+<path d="M440,865 L417,890" fill="none" stroke="var(--indigo-500,#6366f1)" stroke-width="1.4" marker-end="url(#ar-indigo)"/>
+
+<rect x="500" y="890" width="125" height="80" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.5"/>
+<text x="562" y="911" text-anchor="middle" class="lblS">できない</text>
+<text x="562" y="927" text-anchor="middle" class="note">室内移動が</text>
+<text x="562" y="940" text-anchor="middle" class="note">車椅子なしで困難</text>
+<text x="562" y="957" text-anchor="middle" class="tag" fill="var(--orange-700,#c2410c)">→自走式のまま</text>
+<path d="M540,865 L562,890" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.4" marker-end="url(#ar-orange)"/>
+
+<!-- できる advisory text -->
+<text x="417" y="985" text-anchor="middle" class="note" font-style="italic">室内は車椅子なしでも移動できる</text>
+<text x="417" y="998" text-anchor="middle" class="note" font-style="italic">→屋内自走ニーズは薄い。付き添い</text>
+<text x="417" y="1011" text-anchor="middle" class="note" font-style="italic">前提なら介助式が扱いやすい</text>
+
+<!-- II できない hand-rim note (side annotation only, not on main path) -->
+<rect x="355" y="1030" width="270" height="95" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="368" y="1048" class="note">注記（自走式のまま進む場合）：ハンドリムの分だけ幅を</text>
+<text x="368" y="1063" class="note">取り、屋内の狭い場所では小回りが利きにくい点に</text>
+<text x="368" y="1078" class="note">ご注意ください。通路幅・回転スペースを事前確認。</text>
+<text x="368" y="1096" class="note">本来のII「屋内限定の自走ニーズ」に合致するケース</text>
+<line x1="562" y1="970" x2="490" y2="1030" stroke="var(--amber-400,#fbbf24)" stroke-width="1.2" marker-end="url(#ar-amber)"/>
+
+<!-- Lane bus labels -->
+<text x="1440" y="1115" class="tag" fill="var(--indigo-600,#4f46e5)">介助式バス</text>
+<text x="1440" y="1195" class="tag" fill="var(--orange-600,#ea580c)">自走式バス</text>
+
+<!-- Indigo bus: sources できる(exit left @355,930)->x330 ; III(790,950); IV(1090,950) ; bus y=1120 x330-1090 ; drop at x=370 into Q2 -->
+<path d="M355,930 L330,930 L330,1120" fill="none" stroke="var(--indigo-400,#818cf8)" stroke-width="1.4"/>
+<path d="M790,950 L790,1120" fill="none" stroke="var(--indigo-400,#818cf8)" stroke-width="1.4"/>
+<path d="M1090,950 L1090,1120" fill="none" stroke="var(--indigo-400,#818cf8)" stroke-width="1.4"/>
+<path d="M330,1120 L1090,1120" fill="none" stroke="var(--indigo-400,#818cf8)" stroke-width="1.6"/>
+<path d="M370,1120 L370,1298" fill="none" stroke="var(--indigo-500,#6366f1)" stroke-width="1.7" marker-end="url(#ar-indigo)"/>
+
+<!-- Orange bus: sources leafI(190,746); できない(562,970exit->x640? use direct 562 down since column clear below note now at x355-625 y1030-1125, need できない's own exit separate from hand-rim note path) ; leafV(1390,746) ; bus y=1160 x190-1390 ; drop at x=1250 into Q2 -->
+<path d="M190,746 L190,1160" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.4"/>
+<path d="M562,970 L640,970 L640,1160" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.4"/>
+<path d="M1390,746 L1390,1160" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.4"/>
+<path d="M190,1160 L1390,1160" fill="none" stroke="var(--orange-400,#fb923c)" stroke-width="1.6"/>
+<path d="M1250,1160 L1250,1298" fill="none" stroke="var(--orange-500,#f97316)" stroke-width="1.7" marker-end="url(#ar-orange)"/>
+
+<!-- Q2 boxes -->
+<rect x="60" y="1298" width="620" height="62" rx="8" fill="var(--indigo-100,#e0e7ff)" stroke="var(--indigo-500,#6366f1)" stroke-width="1.6"/>
+<text x="370" y="1324" text-anchor="middle" class="lbl">Q2（共通）移乗（車椅子⇄ベッド・トイレ等）は</text>
+<text x="370" y="1342" text-anchor="middle" class="txtC">自分で立ち上がってできますか？</text>
+
+<rect x="940" y="1298" width="620" height="62" rx="8" fill="var(--orange-100,#ffedd5)" stroke="var(--orange-500,#f97316)" stroke-width="1.6"/>
+<text x="1250" y="1324" text-anchor="middle" class="lbl">Q2（共通）移乗（車椅子⇄ベッド・トイレ等）は</text>
+<text x="1250" y="1342" text-anchor="middle" class="txtC">自分で立ち上がってできますか？</text>
+
+<!-- Q2 criteria notes -->
+<rect x="60" y="1372" width="620" height="92" rx="8" fill="var(--muted,#f8fafc)" stroke="var(--border,#94a3b8)" stroke-width="1.2"/>
+<text x="75" y="1391" class="sec">状態の目安（改訂11で明確化）</text>
+<text x="75" y="1407" class="note">立ち上がれる＝手すり・肘掛けにつかまれば介助者が体を支えなくてもできる（見守りのみ）</text>
+<text x="75" y="1422" class="note">難しい＝介助者が体を支える・抱きかかえるなど身体的な介助が必要</text>
+<text x="75" y="1437" class="note">判断の境界線：「介助者が身体的に支える必要があるかどうか」</text>
+<text x="75" y="1454" class="note">→ 標準型／多機能型は自走式・介助式で共通の軸</text>
+
+<rect x="940" y="1372" width="620" height="92" rx="8" fill="var(--muted,#f8fafc)" stroke="var(--border,#94a3b8)" stroke-width="1.2"/>
+<text x="955" y="1391" class="sec">状態の目安（改訂11で明確化）</text>
+<text x="955" y="1407" class="note">立ち上がれる＝手すり・肘掛けにつかまれば介助者が体を支えなくてもできる（見守りのみ）</text>
+<text x="955" y="1422" class="note">難しい＝介助者が体を支える・抱きかかえるなど身体的な介助が必要</text>
+<text x="955" y="1437" class="note">判断の境界線：「介助者が身体的に支える必要があるかどうか」</text>
+<text x="955" y="1454" class="note">→ 標準型／多機能型は自走式・介助式で共通の軸</text>
+
+<!-- Results -->
+<rect x="60" y="1494" width="290" height="76" rx="8" fill="var(--indigo-50,#eef2ff)" stroke="var(--indigo-600,#4f46e5)" stroke-width="1.6"/>
+<text x="205" y="1517" text-anchor="middle" class="lblS">【結果】介助式・標準型</text>
+<text x="205" y="1535" text-anchor="middle" class="txtC">よかセレクト 介助式</text>
+<text x="205" y="1550" text-anchor="middle" class="note">TRC16-SL-001／26,800円</text>
+
+<rect x="390" y="1494" width="290" height="76" rx="8" fill="var(--indigo-50,#eef2ff)" stroke="var(--indigo-600,#4f46e5)" stroke-width="1.6"/>
+<text x="535" y="1517" text-anchor="middle" class="lblS">【結果】介助式・多機能型</text>
+<text x="535" y="1535" text-anchor="middle" class="txtC">よかべスター 介助式</text>
+<text x="535" y="1550" text-anchor="middle" class="note">TRC16-BS-001／34,800円</text>
+
+<rect x="940" y="1494" width="290" height="76" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-600,#ea580c)" stroke-width="1.6"/>
+<text x="1085" y="1517" text-anchor="middle" class="lblS">【結果】自走式・標準型</text>
+<text x="1085" y="1535" text-anchor="middle" class="txtC">よかセレクト 自走式</text>
+<text x="1085" y="1550" text-anchor="middle" class="note">TRC22-SL-001／26,800円</text>
+
+<rect x="1270" y="1494" width="290" height="76" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-600,#ea580c)" stroke-width="1.6"/>
+<text x="1415" y="1517" text-anchor="middle" class="lblS">【結果】自走式・多機能型</text>
+<text x="1415" y="1535" text-anchor="middle" class="txtC">よかべスター 自走式</text>
+<text x="1415" y="1550" text-anchor="middle" class="note">TRC22-BS-001／34,800円</text>
+
+<line x1="370" y1="1464" x2="205" y2="1494" stroke="var(--indigo-500,#6366f1)" stroke-width="1.4" marker-end="url(#ar-indigo)"/>
+<line x1="370" y1="1464" x2="535" y2="1494" stroke="var(--indigo-500,#6366f1)" stroke-width="1.4" marker-end="url(#ar-indigo)"/>
+<line x1="1250" y1="1464" x2="1085" y2="1494" stroke="var(--orange-500,#f97316)" stroke-width="1.4" marker-end="url(#ar-orange)"/>
+<line x1="1250" y1="1464" x2="1415" y2="1494" stroke="var(--orange-500,#f97316)" stroke-width="1.4" marker-end="url(#ar-orange)"/>
+
+<!-- 補助リンク note -->
+<rect x="700" y="1494" width="220" height="76" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.2" stroke-dasharray="5,3"/>
+<text x="712" y="1513" class="note">結果に納得できない場合：</text>
+<text x="712" y="1527" class="note">自走式の商品ページへの補助</text>
+<text x="712" y="1541" class="note">リンクを残す（診断ロジックの</text>
+<text x="712" y="1555" class="note">分岐ではなく単なる導線）</text>
+
+<!-- 介助式 optional checklist -->
+<rect x="60" y="1600" width="620" height="380" rx="8" fill="var(--indigo-50,#eef2ff)" stroke="var(--indigo-500,#6366f1)" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="75" y="1622" class="sec">任意ステップ（介助式の結果画面のみ）：さらに自分に合うタイプを探す</text>
+<text x="75" y="1638" class="note">新しい必須分岐ではなく、選択式（複数選択可）の補助機能。</text>
+<text x="75" y="1653" class="note">Q2の結果を強制的に上書きしない。</text>
+<text x="75" y="1673" class="txt">☐ ベッド・車からの移乗が多い</text>
+<text x="75" y="1689" class="txt">☐ 円背（背中が丸まっている）・姿勢保持に不安がある</text>
+<text x="75" y="1705" class="txt">☐ 介助者に腰痛など身体的負担がある</text>
+<text x="75" y="1721" class="txt">☐ 雨天・屋外での使用が多い</text>
+<text x="75" y="1737" class="txt">☐ 外出頻度が高く、長時間座ることが多い</text>
+<text x="75" y="1759" class="sec">反映ロジック</text>
+<text x="75" y="1775" class="note">・0件 → Q2の結果（標準型／多機能型）をそのまま最終案内</text>
+<text x="75" y="1791" class="note">・1件以上＋Q2が多機能型</text>
+<text x="75" y="1806" class="note">　→ チェック項目を「多機能型が向いている理由」として一言添える</text>
+<text x="75" y="1822" class="note">・1件以上＋Q2が標準型</text>
+<text x="75" y="1837" class="note">　→「多機能型も候補に」と提示（上書きせず選択肢を提示）</text>
+<text x="75" y="1857" class="sec">多機能型（よかべスター）の対応機能</text>
+<text x="75" y="1873" class="note">肘掛け跳ね上げ＋脚部開閉／背張り調整機能／</text>
+<text x="75" y="1888" class="note">低床構造で押す・移乗の負担軽減／ドラムブレーキ／クッション性</text>
+<text x="75" y="1908" class="note">※各機能説明は、実際の商品ページ記載内容と齟齬がないか</text>
+<text x="75" y="1923" class="note">　アプリ化の際に最終確認すること</text>
+<text x="75" y="1943" class="note">介助式標準型・積み下ろし負担を特に減らしたい場合：</text>
+<text x="75" y="1958" class="note">より軽量な「旅ぐるま KA6」（37,800円）も参考として提示</text>
+<line x1="205" y1="1570" x2="205" y2="1600" stroke="var(--indigo-500,#6366f1)" stroke-width="1.3" marker-end="url(#ar-indigo)"/>
+<line x1="535" y1="1570" x2="535" y2="1600" stroke="var(--indigo-500,#6366f1)" stroke-width="1.3" marker-end="url(#ar-indigo)"/>
+
+<!-- 自走式 result notes ①② -->
+<rect x="940" y="1600" width="620" height="105" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="955" y="1622" class="sec">① サイズ・設置場所の確認注記（自走式の結果画面に表示）</text>
+<text x="955" y="1640" class="note">「ご購入前に、実際に車椅子を使う場所（玄関・廊下の幅など）や、</text>
+<text x="955" y="1656" class="note">車に載せる場合はトランクのサイズもあわせてご確認ください。」</text>
+<text x="955" y="1672" class="note">（口コミの「思ったより大きい・重い」を防ぐ目的）</text>
+<line x1="1085" y1="1570" x2="1085" y2="1600" stroke="var(--orange-500,#f97316)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+<line x1="1415" y1="1570" x2="1415" y2="1600" stroke="var(--orange-500,#f97316)" stroke-width="1.3" marker-end="url(#ar-orange)"/>
+
+<rect x="940" y="1725" width="620" height="150" rx="8" fill="var(--orange-50,#fff7ed)" stroke="var(--orange-500,#f97316)" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="955" y="1747" class="sec">② 今後の身体状況の変化に関する注記</text>
+<text x="955" y="1763" class="note">表示位置：自走式という結果が確定する最後の最後</text>
+<text x="955" y="1778" class="note">（Q2で標準型／多機能型が決まった後・商品案内の直前）</text>
+<text x="955" y="1793" class="note">質問ではなく最終確認の一文として位置づける。</text>
+<text x="955" y="1811" class="note">「今のところ自走式が合っていても、進行性の病気などで</text>
+<text x="955" y="1826" class="note">今後身体状況が変わる可能性がある場合は、将来的に介助式</text>
+<text x="955" y="1841" class="note">への切り替えが必要になることがあります。ご不安な場合は、</text>
+<text x="955" y="1856" class="note">介助式もあわせてご検討いただくか、専門相談員にご相談を。」</text>
+<line x1="1085" y1="1705" x2="1085" y2="1725" stroke="var(--orange-500,#f97316)" stroke-width="1.2" marker-end="url(#ar-orange)"/>
+<line x1="1415" y1="1705" x2="1415" y2="1725" stroke="var(--orange-500,#f97316)" stroke-width="1.2" marker-end="url(#ar-orange)"/>
+<text x="955" y="1902" class="note">※①②は自走式の結果画面のみに表示。介助式には表示しない</text>
+<text x="955" y="1917" class="note">　（EC上のミスマッチ傾向が観測されているのが自走式側のため）</text>
+
+<!-- 共通③ footer note -->
+<rect x="60" y="2000" width="1500" height="86" rx="8" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-width="1.4" stroke-dasharray="5,3"/>
+<text x="810" y="2023" text-anchor="middle" class="sec">③ 全結果画面共通の注記（4つの結果すべて・冒頭リード文と対）</text>
+<text x="810" y="2041" text-anchor="middle" class="txtC">「この診断結果はあくまで参考です。ご心配な点があれば、福祉用具専門相談員にご相談ください。」</text>
+<text x="810" y="2058" text-anchor="middle" class="note">冒頭と結果画面の両方に置くことで、自己申告に基づく目安であり断定ではないことを利用者が見落とさないようにする</text>
+<line x1="205" y1="1980" x2="500" y2="2000" stroke="var(--amber-400,#fbbf24)" stroke-width="1.1" marker-end="url(#ar-amber)"/>
+<line x1="535" y1="1980" x2="700" y2="2000" stroke="var(--amber-400,#fbbf24)" stroke-width="1.1" marker-end="url(#ar-amber)"/>
+<line x1="1085" y1="1965" x2="900" y2="2000" stroke="var(--amber-400,#fbbf24)" stroke-width="1.1" marker-end="url(#ar-amber)"/>
+<line x1="1415" y1="1965" x2="1150" y2="2000" stroke="var(--amber-400,#fbbf24)" stroke-width="1.1" marker-end="url(#ar-amber)"/>
+
+<!-- 制約 note -->
+<rect x="60" y="2106" width="1500" height="72" rx="8" fill="var(--muted,#f8fafc)" stroke="var(--border,#94a3b8)" stroke-width="1.2"/>
+<text x="75" y="2127" class="sec">制約（8章）：静的Webページのみで運用（AI・バックエンド連携なし）。使用シーン確認は選択式のみ、自由記述欄なし。</text>
+<text x="75" y="2145" class="note">Q1・Q2は自己申告に基づく判定であり実際の身体状況を測定するものではない。「間違いをかなり減らせるが、間違えないとは言い切れない」ことを前提に、</text>
+<text x="75" y="2162" class="note">結果画面共通の注記・Q1補足の身体チェックで補うが、最終的な購入判断はユーザー自身・家族・専門相談員に委ねる。電動車椅子は取扱なしのため案内しない。</text>
+
+<!-- Legend -->
+<rect x="60" y="2210" width="22" height="16" rx="3" fill="var(--orange-100,#ffedd5)" stroke="var(--orange-500,#f97316)"/>
+<text x="90" y="2223" class="note">自走式グループ</text>
+<rect x="260" y="2210" width="22" height="16" rx="3" fill="var(--indigo-100,#e0e7ff)" stroke="var(--indigo-500,#6366f1)"/>
+<text x="290" y="2223" class="note">介助式グループ</text>
+<rect x="460" y="2210" width="22" height="16" rx="3" fill="var(--amber-50,#fffbeb)" stroke="var(--amber-400,#fbbf24)" stroke-dasharray="4,2"/>
+<text x="490" y="2223" class="note">補助注記・任意機能（新しい分岐ではない）</text>
+<rect x="800" y="2210" width="22" height="16" rx="3" fill="var(--muted,#f8fafc)" stroke="var(--border,#94a3b8)"/>
+<text x="830" y="2223" class="note">共通の質問・状態の目安・制約</text>
+
+<text x="820" y="2258" text-anchor="middle" class="subtitle">出典：車椅子タイプ診断ロジック_仕様書.md（変更履歴 改訂11・2026-07-17）／このフローチャートはMDの1〜9章の内容を1枚に反映したもの</text>
+</svg>

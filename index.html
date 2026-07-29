@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none';">
 <title>車椅子タイプ診断｜自走式・介助式のどちらが合う？ - 介福本舗</title>
 <style>
   /* 介福本舗ブランドカラーをベースにした洗練されたUIパレット */
@@ -651,6 +652,12 @@
 <script>
 (function(){
 
+function esc(str){
+  return String(str).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
   // ---- Product catalog ----
   var PRODUCTS = {
     selfStandard: { name:"TORICO よかセレクト 自走式 TRC22-SL-001", feature:"軽量・コンパクト", price:"26,800円", url:"https://item.rakuten.co.jp/kaifukuhonpo/kurumaisu-0002/", type:"self", imgUrl:"images/よかセレクト（自走式）_背景透過.png" },
@@ -932,7 +939,7 @@
         '</div>';
     }
 
-    return '<a class="'+cardClass+'" href="'+p.url+'" target="_blank" rel="noopener">' +
+    return '<a class="'+cardClass+'" href="'+p.url+'" target="_blank" rel="noopener noreferrer">' +
       imgHtml +
       '<div class="product-details">' +
       '  <div class="product-header"><span class="'+tagClass+'">'+tagLabel+'</span></div>' +
@@ -974,7 +981,7 @@
     html += '</div>';
 
     if(!isSelf && (state.reason==="III" || state.reason==="IV" || state.reason==="II-yes")){
-      html += '<div class="result-note">結果に納得できない場合のために、<a href="'+PRODUCTS.selfStandard.url+'" target="_blank" rel="noopener" style="color:var(--orange); font-weight:bold;">自走式の商品ページ</a>もあわせてご案内します。</div>';
+      html += '<div class="result-note">結果に納得できない場合のために、<a href="'+PRODUCTS.selfStandard.url+'" target="_blank" rel="noopener noreferrer" style="color:var(--orange); font-weight:bold;">自走式の商品ページ</a>もあわせてご案内します。</div>';
     }
 
     if(state.reason === "II-no"){

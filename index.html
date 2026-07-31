@@ -871,9 +871,9 @@ function esc(str){
       qCard("Q1-b", "車椅子を使う主な場面は？", "「乗る人自身が操作する」と答えた方への確認です。", preNote, [
         { label:"屋内外問わず、日常的にいろいろな場面で自分で動きたい", sub:"買い物・散歩・庭先の移動など",
           onSelect:function(){ state.group="self"; state.reason="I"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
-        { label:"外出はほとんど付き逃ってもらうが、自宅の中だけは自分で移動したい", sub:"家族を呼ばずに屋内だけ自走したい",
+        { label:"外出はほとんど付き添ってもらうが、自宅の中だけは自分で移動したい", sub:"家族を呼ばずに屋内だけ自走したい",
           onSelect:function(){ state.totalSteps=4; state.step="q1b2"; } },
-        { label:"通院やデイサービスの送迎など、決まった外出の時だけ使う予定", sub:"普段は杖や伝い歩きある程度歩ける",
+        { label:"通院やデイサービスの送迎など、決まった外出の時だけ使う予定", sub:"普段は杖や伝い歩きである程度歩ける",
           onSelect:function(){ state.group="help"; state.reason="III"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
         { label:"家族との買い物・外食・旅行などたまの外出で使う予定", sub:"普段の歩行には不安がある",
           onSelect:function(){ state.group="help"; state.reason="IV"; state.totalSteps=3; state.step="q2"; state.backFrom="q1b"; } },
